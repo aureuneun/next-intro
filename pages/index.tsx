@@ -1,15 +1,26 @@
 import type { GetServerSideProps, NextPage } from "next";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import Seo from "../components/Seo";
 
 const Home: NextPage<{ movies: any }> = ({ movies }) => {
+  const router = useRouter();
+  const onClick = (id: any, title: any) => {
+    router.push(`/movies/${title}/${id}`);
+  };
   return (
     <div className="container">
       <Seo title="Home" />
       {movies?.map((movie: any) => (
-        <div className="movie" key={movie.id}>
+        <div
+          className="movie"
+          key={movie.id}
+          onClick={() => onClick(movie.id, movie.original_title)}
+        >
           <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+          <Link href={`/movies/${movie.original_title}/${movie.id}`}>
+            <a>{movie.original_title}</a>
+          </Link>
         </div>
       ))}
       <style jsx>{`
